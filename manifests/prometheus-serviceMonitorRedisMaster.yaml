@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: redis-master
+  name: redis-master
+  namespace: default
+spec:
+  endpoints:
+    - interval: 30s
+      port: http-metrics
+  jobLabel: redis-master
+  namespaceSelector:
+    matchNames:
+      - default
+  selector:
+    matchLabels:
+      k8s-app: redis-master

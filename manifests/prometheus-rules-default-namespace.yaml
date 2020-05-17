@@ -1,0 +1,38 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: prometheus-k8s-default-rules
+  namespace: default
+spec:
+  groups:
+  - name: redis-master
+    rules:
+    - alert: RedisMasterDown
+      annotations:
+        message: Redis Master has disappeared from Prometheus target discovery.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeschedulerdown
+      expr: |
+        absent(up{job="redis-master"} == 1)
+      for: 1m
+      labels:
+        severity: critical
+  - name: redis-slave
+    rules:
+    - alert: RedisSlaveDown
+      annotations:
+        message: Redis Slave has disappeared from Prometheus target discovery.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeschedulerdown
+      expr: |
+        absent(up{job="redis-slave"} == 1)
+      for: 1m
+      labels:
+        severity: critical
+
+
+
+
+
+
