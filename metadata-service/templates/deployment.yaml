@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metadata-service
+spec:
+    replicas: 3
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: metadata-service
+    template:
+      metadata:
+        labels:
+          app: metadata-service
+      spec:
+        containers:
+          - name: metadata-service-container
+            image: sunitparekh/metadata:v2.0
+            ports:
+              - containerPort: 8080
+            env:
+              - name: MONGODB_URI
+                value: mongodb://metadata-mongodb/metadata
+
+
